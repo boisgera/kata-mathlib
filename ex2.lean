@@ -74,7 +74,6 @@ theorem theorem₂ (n : ℕ) : ∀ (k : ℕ), (k ≤ n) -> choose n k = choose n
             contradiction
           rw [Nat.add_one, Nat.sub_one, Nat.succ_pred h]
         rw [this, choose, add_comm]
-
       | inr succ_j_gt_n =>
         have n_sub_j_eq_0 : n - j = 0 := by
           rw [gt_iff_lt, Nat.lt_succ_iff] at succ_j_gt_n
