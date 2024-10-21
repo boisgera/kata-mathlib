@@ -11,5 +11,5 @@ package "kili-mathlib" where
 require "leanprover-community" / "mathlib"
 
 @[default_target]
-lean_lib «KiliMathlib» where
+lean_lib KataMathlib where
   -- add any library configuration options here

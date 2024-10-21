@@ -45,10 +45,40 @@ theorem theorem₁ (n : ℕ) : choose n 0 = 1 ∧ choose n n = 1 := by
       rw [lemma₀ n (n+1) this]
 
 theorem theorem₂ (n : ℕ) : ∀ (k : ℕ), (k ≤ n) -> choose n k = choose n (n - k) := by
-  intro k k_le_n
   induction n with
   | zero =>
+    intro k k_le_n
     simp only [nonpos_iff_eq_zero] at k_le_n
     simp only [_root_.zero_le, Nat.sub_eq_zero_of_le, choose_self, k_le_n]
   | succ n ih =>
-    sorry
+    intro k k_le_succ_n
+    cases k with
+    | zero =>
+      rw [choose]
+      simp only [tsub_zero, (theorem₁ (n+1)).2]
+    | succ j =>
+      simp only [add_le_add_iff_right] at k_le_succ_n
+      rw [choose]
+      simp only [reduceSubDiff]
+      rw [ih j k_le_succ_n]
+      cases le_or_gt (j+1) n with
+      | inl succ_j_le_n =>
+        rw [ih (j+1) succ_j_le_n]
+        have : n - j = (n - (j+1)) + 1 := by
+          rw [<- Nat.sub_sub]
+          have h : n - j ≠ 0 := by
+            intro n_eq_j
+            have n_le_j := Nat.le_of_sub_eq_zero n_eq_j
+            have j_lt_n := Nat.lt_of_succ_le succ_j_le_n
+            have := not_le_of_lt j_lt_n
+            contradiction
+          rw [Nat.add_one, Nat.sub_one, Nat.succ_pred h]
+        rw [this, choose, add_comm]
+
+      | inr succ_j_gt_n =>
+        have n_sub_j_eq_0 : n - j = 0 := by
+          rw [gt_iff_lt, Nat.lt_succ_iff] at succ_j_gt_n
+          rw [Nat.sub_eq_zero_of_le]
+          assumption
+        rw [n_sub_j_eq_0]
+        rw [choose, choose, lemma₀ n (j+1) succ_j_gt_n]
