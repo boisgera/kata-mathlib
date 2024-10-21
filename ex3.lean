@@ -17,9 +17,9 @@ def f : ℕ -> ℤ
 
 #check Nat.strong_induction_on
 
-theorem f_closed_form : ∀ n : ℕ, f n = 2^n + (-1)^n := by
+theorem f_closed_form : ∀ n : ℕ, f n = 2 ^ n + (-1) ^ n := by
   intro
-  apply Nat.strong_induction_on (p := fun (n : ℕ) => f n = 2^n + (-1)^n)
+  apply Nat.strong_induction_on (p := fun (n : ℕ) => f n = 2 ^ n + (-1) ^ n)
   intro n
   match n with
   | 0 => intro ; rw [f]; rfl
